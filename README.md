@@ -1,5 +1,5 @@
 # Slide
-The popular and nostalgic; slide the number into order, puzzle implementation using python on pygame module.
+The popular and nostalgic; slide the number into order, puzzle implementation using python on pygame module, which I made as my 1st sem project.
 
 
 ## Get Started
@@ -18,3 +18,4 @@ python slide.py
 ## Contribution
 Your contribution is highly appreciated 🙏.
 To contribute to this project please read <insert contribution.md>
+> This repository is maintained by [bluishhh](https://github.com/bluishhh). 
