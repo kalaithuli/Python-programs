@@ -17,5 +17,5 @@ python slide.py
 
 ## Contribution
 Your contribution is highly appreciated 🙏.
-To contribute to this project please read <insert contribution.md>
+To contribute to this project please read [how to contribute](https://github.com/bluishhh/Slide/blob/main/contribute.md)
 > This repository is maintained by [bluishhh](https://github.com/bluishhh). 
