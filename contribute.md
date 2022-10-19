@@ -14,7 +14,6 @@ Make sure to follow these guidelines to create quality PRs for this repo
 Make sure to follow these guidelines if you wish to create an issue for this repo:
   - Add an issue 
   - Create a clear title and quality description explaining the problem clearly
-  - If the issue is specific to a particular OS, prefix the title with the name of the OS in all caps within []. eg: [LINUX]This is an issue
   - Tag a maintainer to review the Issue
   
 If you wish to work on this issue you created, tag a maintainer and ask to be assigned
