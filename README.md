@@ -14,8 +14,10 @@ pip install -r requirements.txt
 ```
 python slide.py
 ```
+Volla! You are all set :D
 
 ## Contribution
-Your contribution is highly appreciated 🙏.
-To contribute to this project please read [how to contribute](https://github.com/bluishhh/Slide/blob/main/contribute.md)
+
+To contribute to this project please read [how to contribute](https://github.com/bluishhh/Slide/blob/main/contribute.md).<br>
+Your contribution is highly appreciated 🙏.</br>
 > This repository is maintained by [bluishhh](https://github.com/bluishhh). 
