@@ -19,4 +19,4 @@ Make sure to follow these guidelines if you wish to create an issue for this rep
 If you wish to work on this issue you created, tag a maintainer and ask to be assigned
 
 ## Other Guidelines
-Make sure to add some documentation for the code you have added/changed! This will be appreciated <3
+Make sure to add some documentation for the code you have added/changed! This will be appreciated (in terms of brownie points <3 )
