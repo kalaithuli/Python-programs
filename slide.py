@@ -65,7 +65,7 @@ def main():
 
     surfdisplay = pygame.display.set_mode((WWIDTH, WHEIGHT), pygame.RESIZABLE)
 
-    pygame.display.set_caption('Slide Puzzle')
+    pygame.display.set_caption('Slide Puzzle Game')
 
     BASICFONT = pygame.font.Font('HKGrotesk-Regular.ttf', FONTSIZE)
 
