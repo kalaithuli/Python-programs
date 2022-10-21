@@ -9,7 +9,7 @@ WHEIGHT = 480 # window height
 FPS = 150 #slide speed
 BLANK = None
 
-GENERATIONMOVES = 80
+GENERATIONMOVES = 200
 
 # colours
 #                 R    G    B
@@ -87,7 +87,7 @@ def main():
 
         Move = None # the direction, if any, a tile should slide
 
-        msg = '' # contains the message to show in the upper left corner.
+        msg = 'Click tile or press arrow keys to slide. r to reset' # contains the message to show in the upper left corner.
 
         if mainBoard == SOLVEDBOARD:
 
@@ -105,7 +105,9 @@ def main():
         for event in pygame.event.get(): # event handling loop
 
             if event.type == VIDEORESIZE:
-                drawBoard(mainBoard, '')
+                resizeWindow(event.size)
+                drawBoard(mainBoard, msg)
+
             elif event.type == MOUSEBUTTONUP:
 
                 spotx, spoty = getSpotClicked(mainBoard, event.pos[0], event.pos[1])
@@ -196,7 +198,7 @@ def main():
 
         if Move:
 
-            slideAnimation(mainBoard, Move, 'Click tile or press arrow keys to slide. r to reset', 8)  # show slide on screen
+            slideAnimation(mainBoard, Move, msg, 8)  # show slide on screen
 
             makeMove(mainBoard, Move)
 
@@ -225,7 +227,10 @@ def terminate():
     sys.exit()
 
 
-
+def resizeWindow(size):
+    global WWIDTH, WHEIGHT
+    WWIDTH, WHEIGHT = size
+    updateMargins()
 
 def getStartingBoard():# Return a board data structure with tiles in the solved state.
      
