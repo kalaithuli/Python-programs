@@ -2,7 +2,9 @@ import pygame, sys, random
 from pygame.locals import *
 
 #declarations
-BWIDTH = BHEIGHT = 4  # number of columns n rows in the board, will have to change in case of diff types of boards
+BWIDTH = BHEIGHT = 4  # number of columns and rows in the board right now
+NBWIDTH = NBHEIGHT = 4  # number of columns and rows in the board on next generation
+
 TSIZE = 80 # tile size
 WWIDTH = 640 # window width
 WHEIGHT = 480 # window height
@@ -53,7 +55,9 @@ clock = pygame.time.Clock()
 #button setup
 def main():
 
-    global CLOCK, surfdisplay, BASICFONT, SURF_RESET, RECT_RESET, SURF_NEW, RECT_NEW, SURF_SOLVE, RECT_SOLVE, RECT_QUIT, SURF_QUIT
+    global CLOCK, surfdisplay, BASICFONT
+    global SURF_RESET, RECT_RESET, SURF_NEW, RECT_NEW, SURF_SOLVE, RECT_SOLVE, RECT_QUIT, SURF_QUIT
+    global NBWIDTH, NBHEIGHT
 
     pygame.init()
     CLOCK = pygame.time.Clock()
@@ -137,7 +141,7 @@ def main():
                     elif spotx == blankx and spoty == blanky - 1:
                         Move = DOWN
 
-            elif event.type == KEYUP: # check if the user pressed a key to slide a tile
+            elif event.type == KEYDOWN: # check if the user pressed a key to slide a tile
            
                 if event.key in (K_LEFT, K_a) and isValidMove(mainBoard, LEFT):
 
@@ -154,6 +158,24 @@ def main():
                 elif event.key in (K_DOWN, K_s) and isValidMove(mainBoard, DOWN):
 
                     Move = DOWN
+
+                elif event.key == K_i:
+                    NBHEIGHT -= 1
+                    if NBHEIGHT <= 1: NBHEIGHT = 2  # lowest possible height is 2
+
+                elif event.key == K_k:
+                    NBHEIGHT += 1
+
+                elif event.key == K_j:
+                    NBWIDTH -= 1
+                    if NBWIDTH <= 1: NBWIDTH = 2  # lowest possible width is 2
+
+                elif event.key == K_l:
+                    NBWIDTH += 1
+
+                elif event.key == K_g:
+                    mainBoard, solutionSeq = generateNewPuzzle(80)
+                    SOLVEDBOARD = getStartingBoard()
 
         if Move:
 
@@ -372,6 +394,17 @@ def slideAnimation(board, direction, message, animationSpeed): # tile sliding ac
 def generateNewPuzzle(numSlides):
     #making numSlides number of moves from solved config and animating
    
+    global BWIDTH, BHEIGHT
+    global XMARGIN, YMARGIN
+
+    BWIDTH = NBWIDTH
+    BHEIGHT = NBHEIGHT
+
+    #board margins
+    XMARGIN = int((WWIDTH - (TSIZE * BWIDTH + (BWIDTH - 1))) / 2)
+    YMARGIN = int((WHEIGHT - (TSIZE * BHEIGHT + (BHEIGHT - 1))) / 2)
+
+
     sequence = []
     board = getStartingBoard()
     drawBoard(board, '')
