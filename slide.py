@@ -209,7 +209,9 @@ def main():
 
         if Move:
 
-            slideAnimation(mainBoard, Move, msg, 8)  # show slide on screen
+            # show slide on screen
+            slideAnimation(mainBoard, Move,
+                           'Click tile or press arrow keys to slide.', 8, 70)
 
             makeMove(mainBoard, Move)
 
@@ -368,11 +370,11 @@ def timer():
     return counter, font
 
 
-def drawBoard(board, message):  # current board creation
+def drawBoard(board, message, x):  # current board creation
 
     surfdisplay.fill(BGCOLOR)
     if message:   # message on top left corner
-        textSurf, textRect = makeText(message, MESSAGECOLOR, WHITE, WWIDTH / 3, WHEIGHT / 6)
+        textSurf, textRect = makeText(message, MESSAGECOLOR, WHITE, ((WWIDTH / 3) - x), WHEIGHT / 6)
         surfdisplay.blit(textSurf, textRect)
 
     for tilex in range(len(board)):
@@ -381,7 +383,7 @@ def drawBoard(board, message):  # current board creation
                 drawTile(tilex, tiley, board[tilex][tiley])
 
 
-def slideAnimation(board, direction, message, animationSpeed):  # tile sliding action
+def slideAnimation(board, direction, message, animationSpeed, x):  # tile sliding action
     # Note: This function does not check if the move is valid.
 
     blankx, blanky = getBlankPosition(board)
@@ -402,7 +404,7 @@ def slideAnimation(board, direction, message, animationSpeed):  # tile sliding a
         movey = blanky
 
     # prepare the base surface
-    drawBoard(board, message)
+    drawBoard(board, message, x)
     baseSurf = surfdisplay.copy()
 
     # draw a blank space over the moving tile on the baseSurf Surface.
@@ -450,14 +452,14 @@ def generateNewPuzzle(numSlides):
 
     sequence = []
     board = getStartingBoard()
-    drawBoard(board, '')
+    drawBoard(board, '', 0)
     pygame.display.update()
     # pygame.time.wait(500)  # pause 500 milliseconds for effect (painful if user triggered)
     lastMove = None
 
     for i in range(numSlides):
         move = getRandomMove(board, lastMove)
-        slideAnimation(board, move, 'Generating new puzzle...', int(TSIZE / 3))
+        slideAnimation(board, move, 'Generating new puzzle...', int(TSIZE / 3), -5)
         makeMove(board, move)
         sequence.append(move)
         lastMove = move
