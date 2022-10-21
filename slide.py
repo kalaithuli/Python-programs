@@ -103,7 +103,9 @@ def main():
         # actions n outcomes sync
         for event in pygame.event.get():  # event handling loop
 
-            if event.type == MOUSEBUTTONUP:
+            if event.type == VIDEORESIZE:
+                drawBoard(mainBoard, '')
+            elif event.type == MOUSEBUTTONUP:
 
                 spotx, spoty = getSpotClicked(mainBoard, event.pos[0], event.pos[1])
 
