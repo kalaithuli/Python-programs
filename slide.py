@@ -7,34 +7,35 @@ from pygame.locals import *
 # number of columns n rows in the board, will have to change in case of diff types of boards
 BWIDTH = BHEIGHT = 4
 TSIZE = 80  # tile size
-WWIDTH = 640  # window width
-WHEIGHT = 480  # window height
+WWIDTH = 840  # window width
+WHEIGHT = 680  # window height
 FPS = 150  # slide speed
 BLANK = None
 
 # colours
 #                 R    G    B
-BLACK = (0,   0,   0)
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BEIGE = (223, 180, 143)
-DARKTURQUOISE = (3,  54,  73)
+DARKTURQUOISE = (3, 54, 73)
 PASTELBLUE = (131, 190, 215)
+GREEN = (0, 255, 187)
 PASTELPINK = (255, 192, 245)
-GREEN = (41, 210,  80)
-MAROON = (127,  31,  69)
-COBALTBLUE = (83,   9, 255)
-OLIVEGREEN = (23,  57,  28)
+GREEN = (41, 210, 80)
+MAROON = (127, 31, 69)
+COBALTBLUE = (83, 9, 255)
+OLIVEGREEN = (23, 57, 28)
 TEAL = (85, 210, 190)
 CYAN = (108, 232, 240)
-BROWN = (129,  74,  60)
+BROWN = (129, 74, 60)
 SAND = (255, 198, 131)
 
 # all button stuff
-BGCOLOR = SAND
+BGCOLOR = (0, 11, 31)
 TILECOLOR = MAROON
 TC = WHITE
 BORDERCOLOR = DARKTURQUOISE
-FONTSIZE = 20
+FONTSIZE = 25
 BUTTONCOLOR = WHITE
 BUTTONTC = BLACK
 MESSAGECOLOR = WHITE
@@ -50,7 +51,7 @@ LEFT = 'left'
 RIGHT = 'right'
 
 # timer
-screen = pygame.display.set_mode((WWIDTH-100, WHEIGHT-100))
+screen = pygame.display.set_mode((WWIDTH - 100, WHEIGHT - 100))
 clock = pygame.time.Clock()
 
 # button setup
@@ -65,19 +66,19 @@ def main():
 
     surfdisplay = pygame.display.set_mode((WWIDTH, WHEIGHT), pygame.RESIZABLE)
 
-    pygame.display.set_caption('Slide Puzzle')
+    pygame.display.set_caption('Slide Puzzle Game')
 
-    BASICFONT = pygame.font.Font('freesansbold.ttf', FONTSIZE)
+    BASICFONT = pygame.font.Font('HKGrotesk-Regular.ttf', FONTSIZE)
 
     # Store the option buttons and their rectangles in OPTIONS.
     SURF_RESET, RECT_RESET = makeText(
-        'Reset',    TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 120)
+        'Reset', TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 120)
     SURF_NEW, RECT_NEW = makeText(
         'New Game', TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 90)
     SURF_QUIT, RECT_QUIT = makeText(
         'End Game', TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 30)
     SURF_SOLVE, RECT_SOLVE = makeText(
-        'Solve',    TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 60)
+        'Solve', TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 60)
 
     mainBoard, solutionSeq = generateNewPuzzle(80)
 
@@ -215,7 +216,7 @@ def getStartingBoard():  # Return a board data structure with tiles in the solve
         board.append(column)
         counter -= BWIDTH * (BHEIGHT - 1) + BWIDTH - 1
 
-    board[BWIDTH-1][BHEIGHT-1] = None
+    board[BWIDTH - 1][BHEIGHT - 1] = None
     return board
 
 
@@ -299,8 +300,8 @@ def getSpotClicked(board, x, y):
 def drawTile(tilex, tiley, number, driftx=0, drifty=0):  # drawing a tile
 
     left, top = getpixelcoord(tilex, tiley)
-    pygame.draw.rect(surfdisplay, TILECOLOR,
-                     (left + driftx, top + drifty, TSIZE, TSIZE))
+    pygame.draw.rect(surfdisplay, BLACK, (left + driftx, top + drifty, TSIZE, TSIZE), border_radius=8)
+    pygame.draw.rect(surfdisplay, GREEN, (left + driftx, top + drifty, TSIZE, TSIZE), 3, border_radius=8)
     textSurf = BASICFONT.render(str(number), True, TC)
     textRect = textSurf.get_rect()
     textRect.center = left + int(TSIZE / 2) + \
@@ -312,7 +313,7 @@ def drawTile(tilex, tiley, number, driftx=0, drifty=0):  # drawing a tile
 # creating Surface and Rect objects for some text like a text box
 def makeText(text, color, bgcolor, top, left):
 
-    textSurf = BASICFONT.render(text, True, color, bgcolor)
+    textSurf = BASICFONT.render(text, True, WHITE, BGCOLOR)
     textRect = textSurf.get_rect()
     textRect.topleft = (top, left)
     return (textSurf, textRect)
@@ -329,7 +330,7 @@ def drawBoard(board, message):  # current board creation
 
     surfdisplay.fill(BGCOLOR)
     if message:   # message on top left corner
-        textSurf, textRect = makeText(message, MESSAGECOLOR, BGCOLOR, 5, 5)
+        textSurf, textRect = makeText(message, MESSAGECOLOR, WHITE, WWIDTH / 3, WHEIGHT / 6)
         surfdisplay.blit(textSurf, textRect)
 
     for tilex in range(len(board)):
