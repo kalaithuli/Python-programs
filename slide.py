@@ -387,7 +387,13 @@ def slideAnimation(board, direction, message, animationSpeed): # tile sliding ac
 
         CLOCK.tick(FPS)
 
+    checkForQuit()
+    surfdisplay.blit(baseSurf, (0, 0))
+    drawTile(blankx, blanky, board[movex][movey], 0, 0)
 
+    pygame.display.update()
+
+    CLOCK.tick(FPS)
 
 
 
