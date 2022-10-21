@@ -95,13 +95,13 @@ def main():
 
         Move = None  # the direction, if any, a tile should slide
 
-        msg = 'Click tile or press arrow keys to slide. r to reset' # contains the message to show in the upper left corner.
+        msg = 'Click tile or press arrow keys to slide. r to reset'  # contains the message to show in the upper left corner.
 
         if mainBoard == SOLVEDBOARD:
 
             msg = 'Solved! Use ijkl to change size and n for new puzzle'
 
-            drawBoard(mainBoard, msg)
+            drawBoard(mainBoard, msg, 0)
 
             checkForQuit()
 
@@ -110,7 +110,7 @@ def main():
 
             if event.type == VIDEORESIZE:
                 resizeWindow(event.size)
-                drawBoard(mainBoard, msg)
+                drawBoard(mainBoard, msg, 0)
 
             elif event.type == MOUSEBUTTONUP:
 
@@ -185,19 +185,22 @@ def main():
 
                     if event.key == K_i:
                         BHEIGHT -= 1
-                        if BHEIGHT <= 1: BHEIGHT = 2  # lowest possible height is 2
+                        if BHEIGHT <= 1:
+                            BHEIGHT = 2  # lowest possible height is 2
 
                     elif event.key == K_k:
                         BHEIGHT += 1
 
                     elif event.key == K_j:
                         BWIDTH -= 1
-                        if BWIDTH <= 1: BWIDTH = 2  # lowest possible width is 2
+                        if BWIDTH <= 1:
+                            BWIDTH = 2  # lowest possible width is 2
 
                     elif event.key == K_l:
                         BWIDTH += 1
 
-                    else: continue
+                    else:
+                        continue
 
                     updateMargins()
                     mainBoard = getStartingBoard()
@@ -248,8 +251,9 @@ def resizeWindow(size):
     WWIDTH, WHEIGHT = size
     updateMargins()
 
-def getStartingBoard():# Return a board data structure with tiles in the solved state.
-     
+
+def getStartingBoard():  # Return a board data structure with tiles in the solved state.
+
     counter = 1
     board = []
     for x in range(BWIDTH):
@@ -373,6 +377,11 @@ def timer():
 def drawBoard(board, message, x):  # current board creation
 
     surfdisplay.fill(BGCOLOR)
+    surfdisplay.blit(SURF_RESET, RECT_RESET)
+    surfdisplay.blit(SURF_NEW, RECT_NEW)
+    surfdisplay.blit(SURF_QUIT, RECT_QUIT)
+    surfdisplay.blit(SURF_SOLVE, RECT_SOLVE)
+
     if message:   # message on top left corner
         textSurf, textRect = makeText(message, MESSAGECOLOR, WHITE, ((WWIDTH / 3) - x), WHEIGHT / 6)
         surfdisplay.blit(textSurf, textRect)
@@ -486,7 +495,7 @@ def resetAnimation(board, allMoves):
         elif move == LEFT:
             oppositeMove = RIGHT
 
-        slideAnimation(board, oppositeMove, '', int(TSIZE / 2))
+        slideAnimation(board, oppositeMove, '', int(TSIZE / 2), 0)
         makeMove(board, oppositeMove)
 
 
