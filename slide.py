@@ -4,14 +4,15 @@ import random
 from pygame.locals import *
 
 #declarations
-BWIDTH = BHEIGHT = 4  # number of columns and rows in the board right now
-NBWIDTH = NBHEIGHT = 4  # number of columns and rows in the board on next generation
+BWIDTH = BHEIGHT = 4  # number of columns and rows in the board
 
 TSIZE = 80 # tile size
 WWIDTH = 640 # window width
 WHEIGHT = 480 # window height
 FPS = 150 #slide speed
 BLANK = None
+
+GENERATIONMOVES = 80
 
 # colours
 #                 R    G    B
@@ -62,7 +63,7 @@ def main():
 
     global CLOCK, surfdisplay, BASICFONT
     global SURF_RESET, RECT_RESET, SURF_NEW, RECT_NEW, SURF_SOLVE, RECT_SOLVE, RECT_QUIT, SURF_QUIT
-    global NBWIDTH, NBHEIGHT
+    global BWIDTH, BHEIGHT
 
     pygame.init()
     CLOCK = pygame.time.Clock()
@@ -79,7 +80,10 @@ def main():
     SURF_QUIT, RECT_QUIT = makeText('End Game', TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 30)
     SURF_SOLVE, RECT_SOLVE = makeText('Solve', TC, TILECOLOR, WWIDTH - 120, WHEIGHT - 60)
 
-    mainBoard, solutionSeq = generateNewPuzzle(80)
+    # mainBoard, solutionSeq = generateNewPuzzle(GENERATIONMOVES)
+
+    mainBoard = getStartingBoard()
+    solutionSeq = []
 
     SOLVEDBOARD = getStartingBoard()  # board in starting.
 
@@ -94,7 +98,7 @@ def main():
 
         if mainBoard == SOLVEDBOARD:
 
-            msg = 'Solved!'
+            msg = 'Solved! Use ijkl to change size and n for new puzzle'
 
             drawBoard(mainBoard, msg)
 
@@ -114,7 +118,7 @@ def main():
                         allMoves = []
 
                     elif RECT_NEW.collidepoint(event.pos):  # clicked on New Game button
-                        mainBoard, solutionSeq = generateNewPuzzle(80)
+                        mainBoard, solutionSeq = generateNewPuzzle(GENERATIONMOVES)
                         allMoves = []
 
                     elif RECT_SOLVE.collidepoint(event.pos):  # clicked on Solve button
@@ -156,27 +160,43 @@ def main():
 
                     Move = DOWN
 
-                elif event.key == K_i:
-                    NBHEIGHT -= 1
-                    if NBHEIGHT <= 1: NBHEIGHT = 2  # lowest possible height is 2
 
-                elif event.key == K_k:
-                    NBHEIGHT += 1
-
-                elif event.key == K_j:
-                    NBWIDTH -= 1
-                    if NBWIDTH <= 1: NBWIDTH = 2  # lowest possible width is 2
-
-                elif event.key == K_l:
-                    NBWIDTH += 1
+                elif event.key == K_r:
+                    mainBoard = getStartingBoard()
+                    # SOLVEDBOARD = getStartingBoard()  # should not be necessary
+                    solutionSeq = []
 
                 elif event.key == K_g:
-                    mainBoard, solutionSeq = generateNewPuzzle(80)
+                    mainBoard, solutionSeq = generateNewPuzzle(GENERATIONMOVES)
                     SOLVEDBOARD = getStartingBoard()
+
+                elif mainBoard == SOLVEDBOARD:
+                    # Change board size only when it's solved
+
+                    if event.key == K_i:
+                        BHEIGHT -= 1
+                        if BHEIGHT <= 1: BHEIGHT = 2  # lowest possible height is 2
+
+                    elif event.key == K_k:
+                        BHEIGHT += 1
+
+                    elif event.key == K_j:
+                        BWIDTH -= 1
+                        if BWIDTH <= 1: BWIDTH = 2  # lowest possible width is 2
+
+                    elif event.key == K_l:
+                        BWIDTH += 1
+
+                    else: continue
+
+                    updateMargins()
+                    mainBoard = getStartingBoard()
+                    SOLVEDBOARD = getStartingBoard()
+                    solutionSeq = []
 
         if Move:
 
-            slideAnimation(mainBoard, Move, 'Click tile or press arrow keys to slide.', 8)  # show slide on screen
+            slideAnimation(mainBoard, Move, 'Click tile or press arrow keys to slide. r to reset', 8)  # show slide on screen
 
             makeMove(mainBoard, Move)
 
@@ -392,24 +412,21 @@ def slideAnimation(board, direction, message, animationSpeed):  # tile sliding a
     CLOCK.tick(FPS)
 
 
-def generateNewPuzzle(numSlides):
-    #making numSlides number of moves from solved config and animating
-   
-    global BWIDTH, BHEIGHT
+def updateMargins():
     global XMARGIN, YMARGIN
-
-    BWIDTH = NBWIDTH
-    BHEIGHT = NBHEIGHT
-
-    #board margins
+    # board margins
     XMARGIN = int((WWIDTH - (TSIZE * BWIDTH + (BWIDTH - 1))) / 2)
     YMARGIN = int((WHEIGHT - (TSIZE * BHEIGHT + (BHEIGHT - 1))) / 2)
 
+
+def generateNewPuzzle(numSlides):
+    #making numSlides number of moves from solved config and animating
+   
     sequence = []
     board = getStartingBoard()
     drawBoard(board, '')
     pygame.display.update()
-    pygame.time.wait(500)  # pause 500 milliseconds for effect
+    # pygame.time.wait(500)  # pause 500 milliseconds for effect (painful when user triggered)
     lastMove = None
 
     for i in range(numSlides):
