@@ -12,6 +12,7 @@ WHEIGHT = 680  # window height
 FPS = 150  # slide speed
 BLANK = None
 
+GENERATIONMOVES = 200
 # colours
 #                 R    G    B
 BLACK = (0, 0, 0)
@@ -59,7 +60,9 @@ clock = pygame.time.Clock()
 
 def main():
 
-    global CLOCK, surfdisplay, BASICFONT, SURF_RESET, RECT_RESET, SURF_NEW, RECT_NEW, SURF_SOLVE, RECT_SOLVE, RECT_QUIT, SURF_QUIT
+    global CLOCK, surfdisplay, BASICFONT
+    global SURF_RESET, RECT_RESET, SURF_NEW, RECT_NEW, SURF_SOLVE, RECT_SOLVE, RECT_QUIT, SURF_QUIT
+    global BWIDTH, BHEIGHT
 
     pygame.init()
     CLOCK = pygame.time.Clock()
@@ -92,11 +95,11 @@ def main():
 
         Move = None  # the direction, if any, a tile should slide
 
-        msg = ''  # contains the message to show in the upper left corner.
+        msg = 'Click tile or press arrow keys to slide. r to reset' # contains the message to show in the upper left corner.
 
         if mainBoard == SOLVEDBOARD:
 
-            msg = 'Solved!'
+            msg = 'Solved! Use ijkl to change size and n for new puzzle'
 
             drawBoard(mainBoard, msg)
 
@@ -106,7 +109,9 @@ def main():
         for event in pygame.event.get():  # event handling loop
 
             if event.type == VIDEORESIZE:
-                drawBoard(mainBoard, '')
+                resizeWindow(event.size)
+                drawBoard(mainBoard, msg)
+
             elif event.type == MOUSEBUTTONUP:
 
                 spotx, spoty = getSpotClicked(
@@ -165,6 +170,40 @@ def main():
                 elif event.key in (K_DOWN, K_s) and isValidMove(mainBoard, DOWN):
 
                     Move = DOWN
+
+                elif event.key == K_r:
+                    mainBoard = getStartingBoard()
+                    # SOLVEDBOARD = getStartingBoard()  # should not be necessary
+                    solutionSeq = []
+
+                elif event.key == K_g:
+                    mainBoard, solutionSeq = generateNewPuzzle(GENERATIONMOVES)
+                    SOLVEDBOARD = getStartingBoard()
+
+                elif mainBoard == SOLVEDBOARD:
+                    # Change board size only when it's solved
+
+                    if event.key == K_i:
+                        BHEIGHT -= 1
+                        if BHEIGHT <= 1: BHEIGHT = 2  # lowest possible height is 2
+
+                    elif event.key == K_k:
+                        BHEIGHT += 1
+
+                    elif event.key == K_j:
+                        BWIDTH -= 1
+                        if BWIDTH <= 1: BWIDTH = 2  # lowest possible width is 2
+
+                    elif event.key == K_l:
+                        BWIDTH += 1
+
+                    else: continue
+
+                    updateMargins()
+                    mainBoard = getStartingBoard()
+                    SOLVEDBOARD = getStartingBoard()
+                    solutionSeq = []
+
             elif event.type == QUIT:
                 running = False
 
@@ -204,8 +243,13 @@ def terminate():
     sys.exit()
 
 
-def getStartingBoard():  # Return a board data structure with tiles in the solved state.
+def resizeWindow(size):
+    global WWIDTH, WHEIGHT
+    WWIDTH, WHEIGHT = size
+    updateMargins()
 
+def getStartingBoard():# Return a board data structure with tiles in the solved state.
+     
     counter = 1
     board = []
     for x in range(BWIDTH):
@@ -396,6 +440,13 @@ def slideAnimation(board, direction, message, animationSpeed, x):  # tile slidin
     CLOCK.tick(FPS)
 
 
+def updateMargins():
+    global XMARGIN, YMARGIN
+    # board margins
+    XMARGIN = int((WWIDTH - (TSIZE * BWIDTH + (BWIDTH - 1))) / 2)
+    YMARGIN = int((WHEIGHT - (TSIZE * BHEIGHT + (BHEIGHT - 1))) / 2)
+
+
 def generateNewPuzzle(numSlides):
     # making numSlides number of moves from solved config and animating
 
@@ -403,7 +454,7 @@ def generateNewPuzzle(numSlides):
     board = getStartingBoard()
     drawBoard(board, '', 0)
     pygame.display.update()
-    pygame.time.wait(500)  # pause 500 milliseconds for effect
+    # pygame.time.wait(500)  # pause 500 milliseconds for effect (painful if user triggered)
     lastMove = None
 
     for i in range(numSlides):
