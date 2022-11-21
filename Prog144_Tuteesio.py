@@ -2,7 +2,7 @@ from tkinter import *
 import mysql.connector as sqltor
 from plyer import notification
 import matplotlib.pyplot as plt
-
+from tkinter import messagebox
 
 # opening window
 window1 = Tk()
@@ -895,8 +895,8 @@ def calc1():
     y1 = [int(m[0]),int(m[1]),int(m[2]),int(m[3]),int(m[4]),int(m[5])]
     x1 = [en , ph , hi , ch , ma , co]
     subjects = ["English" , "Physics", "Hindi" ,"Chemistry" , "Mathematics" , "Computer"]
-    plt.plot(subjects,x1,label = "Last term marks",marker='o',markerfacecolor='green')
-    plt.plot(subjects,y1,label="This term marks",marker='o',markerfacecolor='green')
+    plt.plot(subjects,x1,label = "This term marks",marker='o',markerfacecolor='green')
+    plt.plot(subjects,y1,label="Last term marks",marker='o',markerfacecolor='green')
     plt.xlabel("Subjects")
     plt.ylabel("Marks")
     plt.title("Comparison")
