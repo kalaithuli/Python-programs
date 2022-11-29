@@ -1,0 +1,55 @@
+elements r of 2 types - self closing elem n openin n closing elem
+self clsing - <element />
+its an elem which doesnt hav any content
+opn n close elem - <elememnt> content </element>
+
+html must start with <DOCTYPE html>
+it basically defines tat the document type
+its nt a self clsin tag
+
+to giv comments in html
+<!-- sm comment __>
+in a good txt editor , ctrl + / wil cig comment tag
+
+heading tags - goes from h1 to h6
+h1 has bigger size n holds more importance and preferance n decreases towards h6.
+
+for paragraphs or sm kinda content , we use <p> </p> tag
+they can hav attributes fr ex: <p style="font-size : 20px;"> sm content </p>
+this attribute is nt necessary cld be done with css as well
+
+<a> </a> tag is similar to <p> tag but only <a> tag has an attribute called 'href'
+href is used to make smthing a link. ex:
+<a href="https://monkeytype.com/"> Link </a>
+
+<img> is a self closing tag , we do not put '/' bcuz smtimes it gives error.
+but fr tags lyk ,<hr/> we need to specify '/'
+
+so <img> tag has an attribute called src to specify the image link , ex:
+<img src="https://play-lh.googleusercontent.com/85WnuKkqDY4gf6tndeL4_Ng5vgRk7PTfmpI4vHMIosyq6XQ7ZGDXNtYG2s0b09kJMw">
+a tag can have multiple attributes. fr ex fr the above tag we can give an attribute called 'alt' ex:
+<img src="https://play-lh.googleusercontent.com/85" alt="Logo">
+
+Lists - ordered n unordered n description list
+unordered list - order doesnt matter
+    <ul>
+        <li> html </li>
+    </ul>
+this gives o/p with a simple dot as bullet mark
+
+ordered list -
+    <ol>
+        <li> html </li>
+        <li> css </li>
+        <li> js </li>
+    </ol>
+this gives o/p with numbers as bullet mark
+<li> stands for list items
+
+descriptive list -
+    <dl>
+        <dt> html </dt>
+            <dd> ~ a markup lang </dd>
+    </dl>
+
+<div> tag works lyk a wrapper n helps in layout , we can put any kind of file in it
