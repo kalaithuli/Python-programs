@@ -4,3 +4,5 @@ User Name: qawst
 Password: qawst1@3$
 User Name: sohni
 Password: h@lle1ujah
+User Name: tamanna
+Password: thuli@456

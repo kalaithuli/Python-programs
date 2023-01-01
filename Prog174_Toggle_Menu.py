@@ -109,8 +109,7 @@ default_home()
 img1 = ImageTk.PhotoImage(Image.open("c1.png"))
 
 global b2
-b2 = Button(w, image=img1,
-            command=toggle_win,
+b2 = Button(w, image=img1,command=toggle_win,
             border=0,
             bg='#262626',
             activebackground='#262626')

@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import time
 from itertools import count, cycle
-w=Tk()
+w=Toplevel()
 width_of_window = 427
 height_of_window = 250
 screen_width = w.winfo_screenwidth()
@@ -57,7 +57,7 @@ def new_win():
     root.mainloop()
 
 def mainwin():
-    top = Tk()
+    top = Toplevel()
     top.title("MainWindow")
     top.geometry("600x300")
     filename = PhotoImage(file="C:\\Users\\Shivakumar\\Desktop\\cricket.gif")
